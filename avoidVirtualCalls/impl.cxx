@@ -3,7 +3,7 @@
 #include "Base.h"
 
 
-class MyClassSingleVirtualCall : public TVirtualMCApplication<>
+class MyClassSingleVirtualCall : public TVirtualMCApplication
 {
   public:
     MyClassSingleVirtualCall() : TVirtualMCApplication()
@@ -18,10 +18,10 @@ class MyClassSingleVirtualCall : public TVirtualMCApplication<>
     }
 };
 
-class MyClassSingleNonVirtualCall : public TVirtualMCApplication<MyClassSingleNonVirtualCall>
+class MyClassSingleNonVirtualCall : public TVirtualMCSingleApplication<MyClassSingleNonVirtualCall>
 {
   public:
-    MyClassSingleNonVirtualCall() : TVirtualMCApplication()
+    MyClassSingleNonVirtualCall() : TVirtualMCSingleApplication()
     {
       std::cout << "MyClassSingleNonVirtualCall construction\n";
     }

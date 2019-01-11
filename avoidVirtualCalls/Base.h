@@ -46,11 +46,11 @@ public:
 };
 
 template<class T=Default>
-class TVirtualMCApplication : public TVirtualMCApplicationBase
+class TVirtualMCSingleApplication : public TVirtualMCApplicationBase
 {
   public:
-    TVirtualMCApplication() : TVirtualMCApplicationBase() {}
-    virtual ~TVirtualMCApplication() = default;
+    TVirtualMCSingleApplication() : TVirtualMCApplicationBase() {}
+    virtual ~TVirtualMCSingleApplication() = default;
 
     virtual void HookSomething() override
     {
@@ -60,11 +60,11 @@ class TVirtualMCApplication : public TVirtualMCApplicationBase
 };
 
 template<>
-class TVirtualMCApplication<Default> : public TVirtualMCApplicationBase
+class TVirtualMCSingleApplication<Default> : public TVirtualMCApplicationBase
 {
   public:
-    TVirtualMCApplication() : TVirtualMCApplicationBase() {}
-    virtual ~TVirtualMCApplication() = default;
+    TVirtualMCSingleApplication() : TVirtualMCApplicationBase() {}
+    virtual ~TVirtualMCSingleApplication() = default;
 
     virtual void HookSomething() override
     {
@@ -89,5 +89,6 @@ class TVirtualMCMultiApplication<Default> : public TVirtualMCApplicationBase
     }
 };
 
+typedef TVirtualMCSingleApplication<> TVirtualMCApplication;
 
 #endif
