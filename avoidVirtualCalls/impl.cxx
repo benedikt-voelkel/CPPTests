@@ -69,6 +69,8 @@ class MyClassMultiNonVirtualCall : public TVirtualMCMultiApplication<MyClassMult
 int main(int argc, char* argv[])
 {
 
+  std::cout << "============ START ============\n\n"; 
+
   MyClassSingleVirtualCall* myClass1 = new MyClassSingleVirtualCall();
   TVirtualMCApplicationBase::Instance()->HookSomething();
   std::cout << "\n\n";

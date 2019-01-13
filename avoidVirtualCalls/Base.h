@@ -1,8 +1,6 @@
 #ifndef BASE_H_
 #define BASE_H_
 
-class Default;
-
 class TVirtualMCApplicationBase
 {
   public:
@@ -29,23 +27,28 @@ class TVirtualMCApplicationBase
 
 TVirtualMCApplicationBase* TVirtualMCApplicationBase::mBasePtr = nullptr;
 
-template <class T=Default>
+template <class T=TVirtualMCApplicationBase>
 class TVirtualMCMultiApplication : public TVirtualMCApplicationBase
 {
-public:
-  TVirtualMCMultiApplication() : TVirtualMCApplicationBase() {}
-  virtual ~TVirtualMCMultiApplication() = default;
+  public:
+    TVirtualMCMultiApplication() : TVirtualMCApplicationBase() {}
+    virtual ~TVirtualMCMultiApplication() = default;
 
-  virtual void HookSomething() override
-  {
-    std::cout << "Hook non-virtual\n";
-    std::cout << "Before something is done\n";
-    static_cast<T*>(this)->Something();
-    std::cout << "After something was done" << std::endl;
-  }
+    virtual void HookSomething() override
+    {
+      std::cout << "Before something is done\n";
+      static_cast<T*>(this)->Something();
+      std::cout << "After something was done" << std::endl;
+    }
 };
 
-template<class T=Default>
+template <>
+TVirtualMCMultiApplication<TVirtualMCApplicationBase>::TVirtualMCMultiApplication() : TVirtualMCApplicationBase()
+{
+  std::cout << "Warning: Hooks will be called entirely virtual." << std::endl;
+}
+
+template<class T=TVirtualMCApplicationBase>
 class TVirtualMCSingleApplication : public TVirtualMCApplicationBase
 {
   public:
@@ -54,40 +57,15 @@ class TVirtualMCSingleApplication : public TVirtualMCApplicationBase
 
     virtual void HookSomething() override
     {
-      std::cout << "Hook non-virtual\n";
       static_cast<T*>(this)->Something();
     }
 };
 
-template<>
-class TVirtualMCSingleApplication<Default> : public TVirtualMCApplicationBase
+template <>
+TVirtualMCSingleApplication<TVirtualMCApplicationBase>::TVirtualMCSingleApplication() : TVirtualMCApplicationBase()
 {
-  public:
-    TVirtualMCSingleApplication() : TVirtualMCApplicationBase() {}
-    virtual ~TVirtualMCSingleApplication() = default;
-
-    virtual void HookSomething() override
-    {
-      std::cout << "Hook virtual\n";
-      Something();
-    }
-};
-
-template<>
-class TVirtualMCMultiApplication<Default> : public TVirtualMCApplicationBase
-{
-  public:
-    TVirtualMCMultiApplication() : TVirtualMCApplicationBase() {}
-    virtual ~TVirtualMCMultiApplication() = default;
-
-    virtual void HookSomething() override
-    {
-      std::cout << "Hook virtual\n";
-      std::cout << "Before something is done\n";
-      Something();
-      std::cout << "After something was done" << std::endl;
-    }
-};
+  std::cout << "Warning: Hooks will be called entirely virtual." << std::endl;
+}
 
 typedef TVirtualMCSingleApplication<> TVirtualMCApplication;
 
